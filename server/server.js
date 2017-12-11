@@ -13,7 +13,19 @@ var io = socketIO(server);
 app.use(express.static(publicPath));
 io.on('connection', (socket) => {
 	console.log('New User Connected');
-
+	// socket.emit('newMessage', {
+	// 	from: 'mike@example.com',
+	// 	to: 'y@gmail.com',
+	// 	createAt: 1234
+	// });
+	socket.on('createMessage', (message) => {
+		console.log('createMessage', message);
+		io.emit('newMessage', {
+			from: message.from,
+			text: message.text,
+			createdAt: new Date().getTime()
+		});
+	});
 	socket.on('disconnect', () => {
 		console.log('User disconnected');
 	});
